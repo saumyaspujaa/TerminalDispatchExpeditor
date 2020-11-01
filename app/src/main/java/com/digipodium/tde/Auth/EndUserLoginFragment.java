@@ -59,11 +59,11 @@ public class EndUserLoginFragment extends Fragment {
         });
         binding.btnForgotPassword.setOnClickListener(v2 -> {
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_deliveryPersonLoginFragment_to_forgotPasswordFragment);
+                    .navigate(R.id.action_endUserLoginFragment_to_forgotPasswordFragment);
         });
         binding.btnUserRegister.setOnClickListener(v3 -> {
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_deliveryPersonLoginFragment_to_deliveryPersonRegisterFragment);
+                    .navigate(R.id.action_endUserLoginFragment_to_endUserRegisterFragment);
         });
     }
 
