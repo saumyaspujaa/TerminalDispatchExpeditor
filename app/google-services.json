@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "9732664209",
+    "firebase_url": "https://tdmcloudproject.firebaseio.com",
+    "project_id": "tdmcloudproject",
+    "storage_bucket": "tdmcloudproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9732664209:android:df034d77ebbb3353b10830",
+        "android_client_info": {
+          "package_name": "com.digipodium.tde"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9732664209-lthh5u2724dfukkol20gov4q68hcgsv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-L-MHHUr2TcVlQUkBc1ortn2j9vGpGLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9732664209-lthh5u2724dfukkol20gov4q68hcgsv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
