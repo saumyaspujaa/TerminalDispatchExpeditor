@@ -67,7 +67,7 @@ public class DeliveryPersonLoginFragment extends Fragment {
     private void updateUI(FirebaseUser user, String msg) {
         binding.pbAdmin.setVisibility(View.GONE);
         if (user != null) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_adminLoginFragment_to_adminDashboardFragment);
+            NavHostFragment.findNavController(this).navigate(R.id.action_deliveryPersonLoginFragment_to_confirmationFragment);
         } else {
             Snackbar.make(binding.btnDlvLogin, msg, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
         }
@@ -77,5 +77,14 @@ public class DeliveryPersonLoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            updateUI(user,"authenticating...");
+        }
     }
 }

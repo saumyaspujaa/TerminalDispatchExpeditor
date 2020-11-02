@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_adminDashboardFragment_to_userChoiceFragment2"
             app:destination="@id/userChoiceFragment2" />
+        <action
+            android:id="@+id/action_adminDashboardFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/deliveryPersonLoginFragment"
@@ -70,6 +73,9 @@
         <action
             android:id="@+id/action_deliveryPersonDashboardFragment_to_userChoiceFragment2"
             app:destination="@id/userChoiceFragment2" />
+        <action
+            android:id="@+id/action_deliveryPersonDashboardFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmationFragment"
@@ -84,7 +90,11 @@
         android:id="@+id/endUserRegisterFragment"
         android:name="com.digipodium.tde.Auth.EndUserRegisterFragment"
         android:label="fragment_end_user_register"
-        tools:layout="@layout/fragment_end_user_register" />
+        tools:layout="@layout/fragment_end_user_register" >
+        <action
+            android:id="@+id/action_endUserRegisterFragment_to_endUserLoginFragment"
+            app:destination="@id/endUserLoginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/endUserLoginFragment"
         android:name="com.digipodium.tde.Auth.EndUserLoginFragment"
@@ -108,5 +118,13 @@
         <action
             android:id="@+id/action_userDashboardFragment_to_userChoiceFragment2"
             app:destination="@id/userChoiceFragment2" />
+        <action
+            android:id="@+id/action_userDashboardFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.digipodium.tde.Auth.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
 </navigation>

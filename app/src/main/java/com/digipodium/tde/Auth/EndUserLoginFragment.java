@@ -70,7 +70,7 @@ public class EndUserLoginFragment extends Fragment {
     private void updateUI(FirebaseUser user, String msg) {
         binding.pbAdmin.setVisibility(View.GONE);
         if (user != null) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_adminLoginFragment_to_adminDashboardFragment);
+            NavHostFragment.findNavController(this).navigate(R.id.action_endUserLoginFragment_to_userDashboardFragment);
         } else {
             Snackbar.make(binding.btnUserRegister, msg, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
         }
@@ -80,5 +80,14 @@ public class EndUserLoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            updateUI(user, "authenticating...");
+        }
     }
 }

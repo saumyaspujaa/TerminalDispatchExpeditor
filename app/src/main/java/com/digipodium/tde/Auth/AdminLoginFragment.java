@@ -73,4 +73,13 @@ public class AdminLoginFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            updateUI(user,"authenticating...");
+        }
+    }
 }
