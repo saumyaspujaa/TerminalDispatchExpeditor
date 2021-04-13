@@ -38,9 +38,12 @@ public class UserDashboardFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_userDashboardFragment_to_userChoiceFragment2);
         });
-        binding.textResetPassword.setOnClickListener(v2 -> {
+        binding.resetUserPassword.setOnClickListener(v2 -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_userDashboardFragment_to_resetPasswordFragment);
+        });
+        binding.newRequest.setOnClickListener(view1 -> {
+            NavHostFragment.findNavController(this).navigate(R.id.action_userDashboardFragment_to_createNewDeliveryRequest);
         });
     }
 }

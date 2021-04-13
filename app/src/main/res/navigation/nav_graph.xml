@@ -91,7 +91,8 @@
         android:name="com.digipodium.tde.Auth.ResetPasswordFragment"
         android:label="reset fragment"
         tools:layout="@layout/fragment_reset_password" />
-    <navigation android:id="@+id/admin_navigation"
+    <navigation
+        android:id="@+id/admin_navigation"
         app:startDestination="@id/adminDashboardFragment">
         <fragment
             android:id="@+id/AaminViewUsers"
@@ -122,6 +123,9 @@
             <action
                 android:id="@+id/action_adminDashboardFragment_to_adminViewDeliveries"
                 app:destination="@id/adminViewDeliveries" />
+            <action
+                android:id="@+id/action_adminDashboardFragment_to_userChoiceFragment2"
+                app:destination="@id/userChoiceFragment2" />
         </fragment>
     </navigation>
     <navigation
@@ -175,6 +179,9 @@
             <action
                 android:id="@+id/action_deliveryPersonDashboardFragment_to_DCurrentDelivery"
                 app:destination="@id/DCurrentDelivery" />
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_userChoiceFragment2"
+                app:destination="@id/userChoiceFragment2" />
         </fragment>
     </navigation>
     <navigation
@@ -213,12 +220,15 @@
             <action
                 android:id="@+id/action_userDashboardFragment_to_reportFeeback"
                 app:destination="@id/reportFeeback" />
+            <action
+                android:id="@+id/action_userDashboardFragment_to_userChoiceFragment2"
+                app:destination="@id/userChoiceFragment2" />
         </fragment>
         <fragment
             android:id="@+id/createNewDeliveryRequest"
-            android:name="com.digipodium.tde.CreateNewDeliveryRequest"
+            android:name="com.digipodium.tde.UserCreateNewDeliveryRequest"
             android:label="fragment_create_new_delivery_request"
-            tools:layout="@layout/fragment_create_new_delivery_request" />
+            tools:layout="@layout/fragment_user_create_new_delivery_request" />
         <fragment
             android:id="@+id/reportFeeback"
             android:name="com.digipodium.tde.ReportFeeback"
