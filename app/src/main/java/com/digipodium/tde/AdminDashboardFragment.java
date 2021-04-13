@@ -37,9 +37,6 @@ public class AdminDashboardFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_adminDashboardFragment_to_userChoiceFragment2);
         });
-        binding.textResetAdmPassword.setOnClickListener(v2 -> {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_adminDashboardFragment_to_resetPasswordFragment);
-        });
+
     }
 }

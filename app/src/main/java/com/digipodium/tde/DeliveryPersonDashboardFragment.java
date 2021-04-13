@@ -37,7 +37,7 @@ public class DeliveryPersonDashboardFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_deliveryPersonDashboardFragment_to_userChoiceFragment2);
         });
-        binding.textResetDlvPassword.setOnClickListener(v2 -> {
+        binding.resetPassword.setOnClickListener(v2 -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_deliveryPersonDashboardFragment_to_resetPasswordFragment);
         });

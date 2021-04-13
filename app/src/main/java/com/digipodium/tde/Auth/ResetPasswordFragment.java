@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ResetPasswordFragment extends Fragment {
 
 
-    private com.digipodium.tde.databinding.FragmentResetPasswordBinding binding;
+    private FragmentResetPasswordBinding binding;
     private FirebaseAuth auth;
 
     @Override
@@ -63,6 +63,6 @@ public class ResetPasswordFragment extends Fragment {
 
     private void updateUI(String msg) {
         binding.pbForgot.setVisibility(View.GONE);
-        Snackbar.make(binding.btnResetPassword, msg, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(binding.btnResetPassword, msg, Snackbar.LENGTH_INDEFINITE).show();
     }
 }

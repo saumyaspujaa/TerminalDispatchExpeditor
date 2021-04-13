@@ -55,6 +55,8 @@ public class AdminLoginFragment extends Fragment {
                         updateUI(null, errorMsg);
                     }
                 });
+            } else {
+                Snackbar.make(binding.getRoot(), "Invalid Credentials", BaseTransientBottomBar.LENGTH_LONG).show();
             }
         });
     }
@@ -78,8 +80,8 @@ public class AdminLoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null){
-            updateUI(user,"authenticating...");
+        if (user != null) {
+            updateUI(user, "authenticating...");
         }
     }
 }
