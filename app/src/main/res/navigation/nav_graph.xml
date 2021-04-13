@@ -54,25 +54,13 @@
         android:label="Forgot Password"
         tools:layout="@layout/fragment_forgot_password" />
     <fragment
-        android:id="@+id/deliveryPersonDashboardFragment"
-        android:name="com.digipodium.tde.DeliveryPersonDashboardFragment"
-        android:label="dashboard"
-        tools:layout="@layout/fragment_delivery_person_dashboard">
-        <action
-            android:id="@+id/action_deliveryPersonDashboardFragment_to_userChoiceFragment2"
-            app:destination="@id/userChoiceFragment2" />
-        <action
-            android:id="@+id/action_deliveryPersonDashboardFragment_to_resetPasswordFragment"
-            app:destination="@id/resetPasswordFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/confirmationFragment"
         android:name="com.digipodium.tde.Auth.ConfirmationFragment"
         android:label="confirm"
         tools:layout="@layout/fragment_confirmation">
         <action
             android:id="@+id/action_confirmationFragment_to_deliveryPersonDashboardFragment"
-            app:destination="@id/deliveryPersonDashboardFragment" />
+            app:destination="@id/dlv_navigate" />
     </fragment>
     <fragment
         android:id="@+id/endUserRegisterFragment"
@@ -96,19 +84,7 @@
             app:destination="@id/forgotPasswordFragment" />
         <action
             android:id="@+id/action_endUserLoginFragment_to_userDashboardFragment"
-            app:destination="@id/userDashboardFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/userDashboardFragment"
-        android:name="com.digipodium.tde.UserDashboardFragment"
-        android:label="Dashboard"
-        tools:layout="@layout/fragment_user_dashboard">
-        <action
-            android:id="@+id/action_userDashboardFragment_to_userChoiceFragment2"
-            app:destination="@id/userChoiceFragment2" />
-        <action
-            android:id="@+id/action_userDashboardFragment_to_resetPasswordFragment"
-            app:destination="@id/resetPasswordFragment" />
+            app:destination="@id/user_navigate" />
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
@@ -138,12 +114,6 @@
             android:label="Admin Dashboard"
             tools:layout="@layout/fragment_admin_dashboard">
             <action
-                android:id="@+id/action_adminDashboardFragment_to_userChoiceFragment2"
-                app:destination="@id/userChoiceFragment2" />
-            <action
-                android:id="@+id/action_adminDashboardFragment_to_resetPasswordFragment"
-                app:destination="@id/resetPasswordFragment" />
-            <action
                 android:id="@+id/action_adminDashboardFragment_to_AaminViewUsers"
                 app:destination="@id/AaminViewUsers" />
             <action
@@ -153,5 +123,111 @@
                 android:id="@+id/action_adminDashboardFragment_to_adminViewDeliveries"
                 app:destination="@id/adminViewDeliveries" />
         </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/dlv_navigate"
+        app:startDestination="@id/deliveryPersonDashboardFragment">
+        <fragment
+            android:id="@+id/DCurrentDelivery"
+            android:name="com.digipodium.tde.DCurrentDelivery"
+            android:label="fragment_d_current_delivery"
+            tools:layout="@layout/fragment_d_current_delivery" />
+        <fragment
+            android:id="@+id/DNavigationMap"
+            android:name="com.digipodium.tde.DNavigationMap"
+            android:label="fragment_d_navigation_map"
+            tools:layout="@layout/fragment_d_navigation_map" />
+        <fragment
+            android:id="@+id/DEditProfile"
+            android:name="com.digipodium.tde.DEditProfile"
+            android:label="fragment_d_edit_profile"
+            tools:layout="@layout/fragment_d_edit_profile" />
+        <fragment
+            android:id="@+id/DViewCompletedDeliveries"
+            android:name="com.digipodium.tde.DViewCompletedDeliveries"
+            android:label="fragment_d_view_completed_deliveries"
+            tools:layout="@layout/fragment_d_view_completed_deliveries" />
+        <fragment
+            android:id="@+id/DViewAvailableDeliveries"
+            android:name="com.digipodium.tde.DViewAvailableDeliveries"
+            android:label="fragment_d_view_available_deliveries"
+            tools:layout="@layout/fragment_d_view_available_deliveries" />
+        <fragment
+            android:id="@+id/deliveryPersonDashboardFragment"
+            android:name="com.digipodium.tde.DeliveryPersonDashboardFragment"
+            android:label="dashboard"
+            tools:layout="@layout/fragment_delivery_person_dashboard">
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_resetPasswordFragment"
+                app:destination="@id/resetPasswordFragment" />
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_DEditProfile"
+                app:destination="@id/DEditProfile" />
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_DNavigationMap"
+                app:destination="@id/DNavigationMap" />
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_DViewAvailableDeliveries"
+                app:destination="@id/DViewAvailableDeliveries" />
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_DViewCompletedDeliveries"
+                app:destination="@id/DViewCompletedDeliveries" />
+            <action
+                android:id="@+id/action_deliveryPersonDashboardFragment_to_DCurrentDelivery"
+                app:destination="@id/DCurrentDelivery" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/user_navigate"
+        app:startDestination="@id/userDashboardFragment">
+        <fragment
+            android:id="@+id/userViewHistory"
+            android:name="com.digipodium.tde.UserViewHistory"
+            android:label="fragment_user_view_history"
+            tools:layout="@layout/fragment_user_view_history" />
+        <fragment
+            android:id="@+id/userCurrentDeliveryRequest"
+            android:name="com.digipodium.tde.UserCurrentDeliveryRequest"
+            android:label="fragment_user_current_delivery_request"
+            tools:layout="@layout/fragment_user_current_delivery_request" />
+        <fragment
+            android:id="@+id/userDashboardFragment"
+            android:name="com.digipodium.tde.UserDashboardFragment"
+            android:label="Dashboard"
+            tools:layout="@layout/fragment_user_dashboard">
+            <action
+                android:id="@+id/action_userDashboardFragment_to_resetPasswordFragment"
+                app:destination="@id/resetPasswordFragment" />
+            <action
+                android:id="@+id/action_userDashboardFragment_to_userViewHistory"
+                app:destination="@id/userViewHistory" />
+            <action
+                android:id="@+id/action_userDashboardFragment_to_userCurrentDeliveryRequest"
+                app:destination="@id/userCurrentDeliveryRequest" />
+            <action
+                android:id="@+id/action_userDashboardFragment_to_userEditProfile"
+                app:destination="@id/userEditProfile" />
+            <action
+                android:id="@+id/action_userDashboardFragment_to_createNewDeliveryRequest"
+                app:destination="@id/createNewDeliveryRequest" />
+            <action
+                android:id="@+id/action_userDashboardFragment_to_reportFeeback"
+                app:destination="@id/reportFeeback" />
+        </fragment>
+        <fragment
+            android:id="@+id/createNewDeliveryRequest"
+            android:name="com.digipodium.tde.CreateNewDeliveryRequest"
+            android:label="fragment_create_new_delivery_request"
+            tools:layout="@layout/fragment_create_new_delivery_request" />
+        <fragment
+            android:id="@+id/reportFeeback"
+            android:name="com.digipodium.tde.ReportFeeback"
+            android:label="fragment_report_feeback"
+            tools:layout="@layout/fragment_report_feeback" />
+        <fragment
+            android:id="@+id/userEditProfile"
+            android:name="com.digipodium.tde.UserEditProfile"
+            android:label="fragment_user_edit_profile"
+            tools:layout="@layout/fragment_user_edit_profile" />
     </navigation>
 </navigation>
