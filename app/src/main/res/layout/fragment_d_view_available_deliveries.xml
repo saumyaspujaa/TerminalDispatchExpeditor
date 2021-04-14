@@ -29,5 +29,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/new_delivery_card" />
+        tools:listitem="@layout/card_new_delivery" />
 </androidx.constraintlayout.widget.ConstraintLayout>

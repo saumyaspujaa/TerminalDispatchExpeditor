@@ -10,7 +10,6 @@
     android:layout_marginTop="4dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="#A5D6A7"
     app:cardCornerRadius="6dp"
     app:cardElevation="6dp">
 
@@ -30,12 +29,12 @@
             app:srcCompat="@drawable/ic_baseline_card_giftcard_24" />
 
         <TextView
-            android:id="@+id/txtDeliveryTitle"
+            android:id="@+id/textReportTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Delivery title"
+            android:text="New Delivery from User"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imgItem"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +48,7 @@
             android:text="Start Location"
             android:textColor="#F44336"
             app:layout_constraintStart_toEndOf="@+id/imgItem"
-            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/textReportTitle" />
 
         <TextView
             android:id="@+id/txtDeliveryDispatch"
@@ -67,12 +66,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:background="@drawable/btn_shape_green"
             android:text="View"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/acceptDelivery"
             app:layout_constraintTop_toBottomOf="@+id/txtDeliveryDispatch" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acceptDelivery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_shape_orange"
+            android:text="Accept"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryDispatch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

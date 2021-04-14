@@ -98,17 +98,29 @@
             android:id="@+id/AaminViewUsers"
             android:name="com.digipodium.tde.AdminViewUsers"
             android:label="Users"
-            tools:layout="@layout/fragment_admin_view_users" />
+            tools:layout="@layout/fragment_admin_view_users">
+            <action
+                android:id="@+id/action_AaminViewUsers_to_adminUserDetailFragment"
+                app:destination="@id/adminUserDetailFragment" />
+        </fragment>
         <fragment
             android:id="@+id/adminViewDeliveries"
             android:name="com.digipodium.tde.AdminViewDeliveries"
             android:label="Deliveries"
-            tools:layout="@layout/fragment_admin_view_deliveries" />
+            tools:layout="@layout/fragment_admin_view_deliveries">
+            <action
+                android:id="@+id/action_adminViewDeliveries_to_adminDeliveryDetail"
+                app:destination="@id/adminDeliveryDetail" />
+        </fragment>
         <fragment
             android:id="@+id/adminViewDeliveryPerson"
             android:name="com.digipodium.tde.AdminViewDeliveryPerson"
             android:label="Delivery person"
-            tools:layout="@layout/fragment_admin_view_delivery_person" />
+            tools:layout="@layout/fragment_admin_view_delivery_person">
+            <action
+                android:id="@+id/action_adminViewDeliveryPerson_to_adminDeliveryPersonDetail"
+                app:destination="@id/adminDeliveryPersonDetail" />
+        </fragment>
         <fragment
             android:id="@+id/adminDashboardFragment"
             android:name="com.digipodium.tde.AdminDashboardFragment"
@@ -126,7 +138,46 @@
             <action
                 android:id="@+id/action_adminDashboardFragment_to_userChoiceFragment2"
                 app:destination="@id/userChoiceFragment2" />
+            <action
+                android:id="@+id/action_adminDashboardFragment_to_adminViewReports"
+                app:destination="@id/adminViewReports" />
         </fragment>
+        <fragment
+            android:id="@+id/adminReportDetailFragment"
+            android:name="com.digipodium.tde.AdminReportDetailFragment"
+            android:label="Report Detail"
+            tools:layout="@layout/fragment_admin_report_detail">
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="detail"
+                app:argType="string" />
+        </fragment>
+        <fragment
+            android:id="@+id/adminViewReports"
+            android:name="com.digipodium.tde.AdminViewReports"
+            android:label="View Reports/Feedback"
+            tools:layout="@layout/fragment_admin_view_reports">
+            <action
+                android:id="@+id/action_adminViewReports_to_adminReportDetailFragment"
+                app:destination="@id/adminReportDetailFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/adminUserDetailFragment"
+            android:name="com.digipodium.tde.AdminUserDetailFragment"
+            android:label="fragment_admin_user_detail"
+            tools:layout="@layout/fragment_admin_user_detail" />
+        <fragment
+            android:id="@+id/adminDeliveryDetail"
+            android:name="com.digipodium.tde.AdminDeliveryDetail"
+            android:label="fragment_admin_delivery_detail"
+            tools:layout="@layout/fragment_admin_delivery_detail" />
+        <fragment
+            android:id="@+id/adminDeliveryPersonDetail"
+            android:name="com.digipodium.tde.AdminDeliveryPersonDetail"
+            android:label="fragment_admin_delivery_person_detail"
+            tools:layout="@layout/fragment_admin_delivery_person_detail" />
     </navigation>
     <navigation
         android:id="@+id/dlv_navigate"
@@ -235,7 +286,7 @@
         </fragment>
         <fragment
             android:id="@+id/reportFeeback"
-            android:name="com.digipodium.tde.ReportFeeback"
+            android:name="com.digipodium.tde.ReportFeedback"
             android:label="fragment_report_feeback"
             tools:layout="@layout/fragment_report_feeback" />
         <fragment
