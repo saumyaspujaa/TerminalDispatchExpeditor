@@ -228,7 +228,11 @@
             android:id="@+id/createNewDeliveryRequest"
             android:name="com.digipodium.tde.UserCreateNewDeliveryRequest"
             android:label="fragment_create_new_delivery_request"
-            tools:layout="@layout/fragment_user_create_new_delivery_request" />
+            tools:layout="@layout/fragment_user_create_new_delivery_request">
+            <action
+                android:id="@+id/action_createNewDeliveryRequest_to_userDashboardFragment"
+                app:destination="@id/userDashboardFragment" />
+        </fragment>
         <fragment
             android:id="@+id/reportFeeback"
             android:name="com.digipodium.tde.ReportFeeback"

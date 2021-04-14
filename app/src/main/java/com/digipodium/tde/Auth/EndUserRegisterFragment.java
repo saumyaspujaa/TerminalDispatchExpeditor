@@ -100,7 +100,7 @@ public class EndUserRegisterFragment extends Fragment {
 
     private void addProfileInfo(UserModel user, FirebaseUser userAcc) {
         CollectionReference users = FirebaseFirestore.getInstance().collection("Users");
-        users.add(user).addOnCompleteListener(task -> {
+        users.document(userAcc.getUid()).set(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 updateUI(userAcc);
             } else {
