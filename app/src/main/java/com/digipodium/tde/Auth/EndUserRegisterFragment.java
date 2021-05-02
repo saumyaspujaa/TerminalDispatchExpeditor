@@ -75,7 +75,7 @@ public class EndUserRegisterFragment extends Fragment {
                         }
 
                     } else {
-                        binding.editAadhar.setError("invalid Aadhar");
+                        binding.editAadhar.setError("invalid Aadhar, please check length");
                         binding.editAadhar.requestFocus();
                     }
                 } else {
