@@ -1,8 +1,11 @@
 package com.digipodium.tde.models;
 
-import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
 
 public class DeliveryModel {
+    public String status;
     public String fullName;
     public String phone;
     public String address;
@@ -14,12 +17,18 @@ public class DeliveryModel {
     public String startLoc;
     public String dispatchLoc;
     public String img;
-    public FieldValue timestamp;
+
+    @ServerTimestamp
+    public Date timestamp;
+
+    public DeliveryModel() {
+
+    }
 
     public DeliveryModel(String fullName, String phone, String address, String city,
                          String email, String deliveryDetails, String startLocationAddr,
                          String dispatchLocationAddr, String startLoc, String dispatchLoc,
-                         String img, FieldValue timestamp) {
+                         String img, String status) {
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
@@ -31,9 +40,7 @@ public class DeliveryModel {
         this.startLoc = startLoc;
         this.dispatchLoc = dispatchLoc;
         this.img = img;
-        this.timestamp = timestamp;
-    }
-
-    public DeliveryModel() {
+        this.timestamp = new Date(System.currentTimeMillis());
+        this.status = status;
     }
 }

@@ -1,11 +1,10 @@
-package com.digipodium.tde;
+package com.digipodium.tde.admin;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,19 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentAdminViewReportsBinding;
 import com.digipodium.tde.models.Report;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class AdminViewReports extends Fragment {
 

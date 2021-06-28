@@ -1,4 +1,4 @@
-package com.digipodium.tde;
+package com.digipodium.tde.admin;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.digipodium.tde.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AdminDeliveryDetail#newInstance} factory method to
+ * Use the {@link AdminDeliveryPersonDetail#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdminDeliveryDetail extends Fragment {
+public class AdminDeliveryPersonDetail extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class AdminDeliveryDetail extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AdminDeliveryDetail() {
+    public AdminDeliveryPersonDetail() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class AdminDeliveryDetail extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminDeliveryDetail.
+     * @return A new instance of fragment AdminDeliveryPersonDetail.
      */
     // TODO: Rename and change types and number of parameters
-    public static AdminDeliveryDetail newInstance(String param1, String param2) {
-        AdminDeliveryDetail fragment = new AdminDeliveryDetail();
+    public static AdminDeliveryPersonDetail newInstance(String param1, String param2) {
+        AdminDeliveryPersonDetail fragment = new AdminDeliveryPersonDetail();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class AdminDeliveryDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_delivery_detail, container, false);
+        return inflater.inflate(R.layout.fragment_admin_delivery_person_detail, container, false);
     }
 }

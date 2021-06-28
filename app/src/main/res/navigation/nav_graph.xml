@@ -96,7 +96,7 @@
         app:startDestination="@id/adminDashboardFragment">
         <fragment
             android:id="@+id/AaminViewUsers"
-            android:name="com.digipodium.tde.AdminViewUsers"
+            android:name="com.digipodium.tde.admin.AdminViewUsers"
             android:label="Users"
             tools:layout="@layout/fragment_admin_view_users">
             <action
@@ -105,7 +105,7 @@
         </fragment>
         <fragment
             android:id="@+id/adminViewDeliveries"
-            android:name="com.digipodium.tde.AdminViewDeliveries"
+            android:name="com.digipodium.tde.admin.AdminViewDeliveries"
             android:label="Deliveries"
             tools:layout="@layout/fragment_admin_view_deliveries">
             <action
@@ -114,7 +114,7 @@
         </fragment>
         <fragment
             android:id="@+id/adminViewDeliveryPerson"
-            android:name="com.digipodium.tde.AdminViewDeliveryPerson"
+            android:name="com.digipodium.tde.admin.AdminViewDeliveryPerson"
             android:label="Delivery person"
             tools:layout="@layout/fragment_admin_view_delivery_person">
             <action
@@ -123,7 +123,7 @@
         </fragment>
         <fragment
             android:id="@+id/adminDashboardFragment"
-            android:name="com.digipodium.tde.AdminDashboardFragment"
+            android:name="com.digipodium.tde.admin.AdminDashboardFragment"
             android:label="Admin Dashboard"
             tools:layout="@layout/fragment_admin_dashboard">
             <action
@@ -144,7 +144,7 @@
         </fragment>
         <fragment
             android:id="@+id/adminReportDetailFragment"
-            android:name="com.digipodium.tde.AdminReportDetailFragment"
+            android:name="com.digipodium.tde.admin.AdminReportDetailFragment"
             android:label="Report Detail"
             tools:layout="@layout/fragment_admin_report_detail">
             <argument
@@ -156,7 +156,7 @@
         </fragment>
         <fragment
             android:id="@+id/adminViewReports"
-            android:name="com.digipodium.tde.AdminViewReports"
+            android:name="com.digipodium.tde.admin.AdminViewReports"
             android:label="View Reports/Feedback"
             tools:layout="@layout/fragment_admin_view_reports">
             <action
@@ -165,17 +165,17 @@
         </fragment>
         <fragment
             android:id="@+id/adminUserDetailFragment"
-            android:name="com.digipodium.tde.AdminUserDetailFragment"
+            android:name="com.digipodium.tde.admin.AdminUserDetailFragment"
             android:label="fragment_admin_user_detail"
             tools:layout="@layout/fragment_admin_user_detail" />
         <fragment
             android:id="@+id/adminDeliveryDetail"
-            android:name="com.digipodium.tde.AdminDeliveryDetail"
+            android:name="com.digipodium.tde.admin.AdminDeliveryDetail"
             android:label="fragment_admin_delivery_detail"
             tools:layout="@layout/fragment_admin_delivery_detail" />
         <fragment
             android:id="@+id/adminDeliveryPersonDetail"
-            android:name="com.digipodium.tde.AdminDeliveryPersonDetail"
+            android:name="com.digipodium.tde.admin.AdminDeliveryPersonDetail"
             android:label="fragment_admin_delivery_person_detail"
             tools:layout="@layout/fragment_admin_delivery_person_detail" />
     </navigation>
@@ -184,32 +184,32 @@
         app:startDestination="@id/deliveryPersonDashboardFragment">
         <fragment
             android:id="@+id/DCurrentDelivery"
-            android:name="com.digipodium.tde.DCurrentDelivery"
+            android:name="com.digipodium.tde.deliveryguy.DCurrentDelivery"
             android:label="fragment_d_current_delivery"
             tools:layout="@layout/fragment_d_current_delivery" />
         <fragment
             android:id="@+id/DNavigationMap"
-            android:name="com.digipodium.tde.DNavigationMap"
+            android:name="com.digipodium.tde.deliveryguy.DNavigationMap"
             android:label="fragment_d_navigation_map"
             tools:layout="@layout/fragment_d_navigation_map" />
         <fragment
             android:id="@+id/DEditProfile"
-            android:name="com.digipodium.tde.DEditProfile"
+            android:name="com.digipodium.tde.deliveryguy.DEditProfile"
             android:label="fragment_d_edit_profile"
             tools:layout="@layout/fragment_d_edit_profile" />
         <fragment
             android:id="@+id/DViewCompletedDeliveries"
-            android:name="com.digipodium.tde.DViewCompletedDeliveries"
+            android:name="com.digipodium.tde.deliveryguy.DViewCompletedDeliveries"
             android:label="fragment_d_view_completed_deliveries"
             tools:layout="@layout/fragment_d_view_completed_deliveries" />
         <fragment
             android:id="@+id/DViewAvailableDeliveries"
-            android:name="com.digipodium.tde.DViewAvailableDeliveries"
+            android:name="com.digipodium.tde.deliveryguy.DViewAvailableDeliveries"
             android:label="fragment_d_view_available_deliveries"
             tools:layout="@layout/fragment_d_view_available_deliveries" />
         <fragment
             android:id="@+id/deliveryPersonDashboardFragment"
-            android:name="com.digipodium.tde.DeliveryPersonDashboardFragment"
+            android:name="com.digipodium.tde.deliveryguy.DeliveryPersonDashboardFragment"
             android:label="dashboard"
             tools:layout="@layout/fragment_delivery_person_dashboard">
             <action
@@ -240,17 +240,17 @@
         app:startDestination="@id/userDashboardFragment">
         <fragment
             android:id="@+id/userViewHistory"
-            android:name="com.digipodium.tde.UserViewHistory"
+            android:name="com.digipodium.tde.user.UserViewHistory"
             android:label="fragment_user_view_history"
             tools:layout="@layout/fragment_user_view_history" />
         <fragment
             android:id="@+id/userCurrentDeliveryRequest"
-            android:name="com.digipodium.tde.UserCurrentDeliveryRequest"
+            android:name="com.digipodium.tde.user.UserCurrentDeliveryRequest"
             android:label="fragment_user_current_delivery_request"
             tools:layout="@layout/fragment_user_current_delivery_request" />
         <fragment
             android:id="@+id/userDashboardFragment"
-            android:name="com.digipodium.tde.UserDashboardFragment"
+            android:name="com.digipodium.tde.user.UserDashboardFragment"
             android:label="Dashboard"
             tools:layout="@layout/fragment_user_dashboard">
             <action
@@ -277,7 +277,7 @@
         </fragment>
         <fragment
             android:id="@+id/createNewDeliveryRequest"
-            android:name="com.digipodium.tde.UserCreateNewDeliveryRequest"
+            android:name="com.digipodium.tde.user.UserCreateNewDeliveryRequest"
             android:label="fragment_create_new_delivery_request"
             tools:layout="@layout/fragment_user_create_new_delivery_request">
             <action
@@ -291,7 +291,7 @@
             tools:layout="@layout/fragment_report_feeback" />
         <fragment
             android:id="@+id/userEditProfile"
-            android:name="com.digipodium.tde.UserEditProfile"
+            android:name="com.digipodium.tde.user.UserEditProfile"
             android:label="fragment_user_edit_profile"
             tools:layout="@layout/fragment_user_edit_profile" />
     </navigation>

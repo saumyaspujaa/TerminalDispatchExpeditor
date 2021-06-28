@@ -1,4 +1,4 @@
-package com.digipodium.tde;
+package com.digipodium.tde.user;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
+import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentUserCreateNewDeliveryRequestBinding;
 import com.digipodium.tde.models.DeliveryModel;
 import com.digipodium.tde.models.UserModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -47,10 +48,10 @@ import static com.digipodium.tde.Constants.COL_USERS;
 
 public class UserCreateNewDeliveryRequest extends Fragment {
 
-    private FragmentUserCreateNewDeliveryRequestBinding bind;
+    static final int REQUEST_IMAGE_GET = 1;
     private static final int REQUEST_START_LOC_CODE = 5678;
     private static final int REQUEST_DISPATCH_LOC_CODE = 5679;
-    static final int REQUEST_IMAGE_GET = 1;
+    private FragmentUserCreateNewDeliveryRequestBinding bind;
     private LatLng LUCKNOW_COORDINATES;
     private FirebaseFirestore fs;
     private FirebaseAuth auth;
@@ -93,16 +94,11 @@ public class UserCreateNewDeliveryRequest extends Fragment {
                             Arrays.toString(startCoords),
                             Arrays.toString(dispatchCoords),
                             imgString,
-                            FieldValue.serverTimestamp()
+                            "created"
                     );
                     fs.collection(COL_DELIVERY).add(delivery).addOnSuccessListener(documentReference -> {
                         bind.pbCreate.setVisibility(View.GONE);
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle("Success")
-                                .setMessage("Created a delivery job, you will be notified as soon as someone from TDE accepts the job. If your job is not accepted in one week, it will be removed")
-                                .setPositiveButton("Continue", (dialogInterface, i) -> {
-                                    NavHostFragment.findNavController(this).navigate(R.id.action_createNewDeliveryRequest_to_userDashboardFragment);
-                                }).create().show();
+                        startActivityForResult(new Intent(getActivity(), CheckoutActivity.class), 22);
                     }).addOnFailureListener(e -> {
                         bind.pbCreate.setVisibility(View.GONE);
                         new AlertDialog.Builder(getActivity())
@@ -216,6 +212,17 @@ public class UserCreateNewDeliveryRequest extends Fragment {
                 }
                 bind.textDispatchLoc.setText(String.format(getString(R.string.selected_dispatch_place_info), carmenFeature.placeName()));
             }
+        }
+        if (requestCode == 22 && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Success")
+                    .setMessage("Created a delivery job, you will be notified as soon as someone from TDE accepts the job. If your job is not accepted in one week, it will be removed")
+                    .setPositiveButton("Continue", (dialogInterface, i) -> {
+
+                        NavHostFragment.findNavController(this).navigate(R.id.action_createNewDeliveryRequest_to_userDashboardFragment);
+                    }).create().show();
         }
     }
 

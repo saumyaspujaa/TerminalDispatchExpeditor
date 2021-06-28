@@ -1,4 +1,4 @@
-package com.digipodium.tde;
+package com.digipodium.tde.deliveryguy;
 
 import android.os.Bundle;
 
@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class DEditProfile extends Fragment {
+import com.digipodium.tde.R;
+
+public class DViewCompletedDeliveries extends Fragment {
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_d_edit_profile, container, false);
+        return inflater.inflate(R.layout.fragment_d_view_completed_deliveries, container, false);
     }
 }
