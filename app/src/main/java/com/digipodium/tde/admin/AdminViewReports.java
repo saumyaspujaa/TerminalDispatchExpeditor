@@ -82,7 +82,7 @@ public class AdminViewReports extends Fragment {
 
             public ItemHolder(@NonNull View iv, ItemAdapter adapter) {
                 super(iv);
-                textReportTitle = iv.findViewById(R.id.textReportTitle);
+                textReportTitle = iv.findViewById(R.id.dlvpersonname);
 
                 this.adapter = adapter;
                 itemView.setOnClickListener(view -> {

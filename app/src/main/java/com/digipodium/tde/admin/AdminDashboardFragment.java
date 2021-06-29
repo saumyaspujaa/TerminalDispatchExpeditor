@@ -34,8 +34,7 @@ public class AdminDashboardFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         binding.textAdmLogout.setOnClickListener(v1 -> {
             auth.signOut();
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_adminDashboardFragment_to_userChoiceFragment2);
+            NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_userChoiceFragment2);
         });
         binding.cardViewUser.setOnClickListener(view1 -> NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_AaminViewUsers));
         binding.cardViewDeliveries.setOnClickListener(view1 -> NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_adminViewDeliveries));

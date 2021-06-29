@@ -18,7 +18,7 @@
 
 
         <TextView
-            android:id="@+id/textReportTitle"
+            android:id="@+id/dlvpersonname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

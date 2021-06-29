@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/ic_baseline_card_giftcard_24" />
 
         <TextView
-            android:id="@+id/textReportTitle"
+            android:id="@+id/dlvpersonname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -40,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtDeliveryStart"
+            android:id="@+id/txtstatue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -48,10 +48,10 @@
             android:text="Start Location"
             android:textColor="#F44336"
             app:layout_constraintStart_toEndOf="@+id/imgItem"
-            app:layout_constraintTop_toBottomOf="@+id/textReportTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/dlvpersonname" />
 
         <TextView
-            android:id="@+id/txtDeliveryDispatch"
+            android:id="@+id/txtapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -59,7 +59,7 @@
             android:text="Dispatch Location"
             android:textColor="#3F51B5"
             app:layout_constraintStart_toEndOf="@+id/imgItem"
-            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryStart" />
+            app:layout_constraintTop_toBottomOf="@+id/txtstatue" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/viewDelivery"
@@ -70,7 +70,7 @@
             android:text="View"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/acceptDelivery"
-            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryDispatch" />
+            app:layout_constraintTop_toBottomOf="@+id/txtapp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/acceptDelivery"
@@ -80,6 +80,6 @@
             android:text="Accept"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryDispatch" />
+            app:layout_constraintTop_toBottomOf="@+id/txtapp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

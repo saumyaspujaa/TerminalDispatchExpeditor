@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentDeliveryPersonDashboardBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class DeliveryPersonDashboardFragment extends Fragment {
@@ -21,10 +22,12 @@ public class DeliveryPersonDashboardFragment extends Fragment {
 
     private com.digipodium.tde.databinding.FragmentDeliveryPersonDashboardBinding binding;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         return inflater.inflate(R.layout.fragment_delivery_person_dashboard, container, false);
     }
 
@@ -32,7 +35,7 @@ public class DeliveryPersonDashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentDeliveryPersonDashboardBinding.bind(view);
-        auth = FirebaseAuth.getInstance();
+
         binding.textDlvLogout.setOnClickListener(v1 -> {
             auth.signOut();
             NavHostFragment.findNavController(this)
@@ -43,4 +46,5 @@ public class DeliveryPersonDashboardFragment extends Fragment {
                     .navigate(R.id.action_deliveryPersonDashboardFragment_to_resetPasswordFragment);
         });
     }
+
 }

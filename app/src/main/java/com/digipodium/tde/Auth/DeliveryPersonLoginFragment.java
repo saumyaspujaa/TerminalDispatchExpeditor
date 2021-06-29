@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -67,7 +69,8 @@ public class DeliveryPersonLoginFragment extends Fragment {
     private void updateUI(FirebaseUser user, String msg) {
         binding.pbAdmin.setVisibility(View.GONE);
         if (user != null) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_deliveryPersonLoginFragment_to_confirmationFragment);
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.action_deliveryPersonLoginFragment_to_confirmationFragment);
         } else {
             Snackbar.make(binding.btnDlvLogin, msg, Snackbar.LENGTH_LONG).setBackgroundTint(Color.RED).show();
         }

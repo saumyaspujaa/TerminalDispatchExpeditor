@@ -47,7 +47,11 @@
         android:id="@+id/deliveryPersonRegisterFragment"
         android:name="com.digipodium.tde.Auth.DeliveryPersonRegisterFragment"
         android:label="register"
-        tools:layout="@layout/fragment_delivery_person_register" />
+        tools:layout="@layout/fragment_delivery_person_register">
+        <action
+            android:id="@+id/action_deliveryPersonRegisterFragment_to_deliveryPersonLoginFragment"
+            app:destination="@id/deliveryPersonLoginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.digipodium.tde.Auth.ForgotPasswordFragment"
@@ -177,7 +181,11 @@
             android:id="@+id/adminDeliveryPersonDetail"
             android:name="com.digipodium.tde.admin.AdminDeliveryPersonDetail"
             android:label="fragment_admin_delivery_person_detail"
-            tools:layout="@layout/fragment_admin_delivery_person_detail" />
+            tools:layout="@layout/fragment_admin_delivery_person_detail">
+            <argument
+                android:name="uid"
+                app:argType="string" />
+        </fragment>
     </navigation>
     <navigation
         android:id="@+id/dlv_navigate"
