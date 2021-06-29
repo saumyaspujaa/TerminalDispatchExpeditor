@@ -1,16 +1,15 @@
 package com.digipodium.tde.admin;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,6 +56,7 @@ public class AdminViewDeliveries extends Fragment {
                 DeliveryModel model = document.toObject(DeliveryModel.class);
                 deliveries.add(model);
             }
+            bind.pbar.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
         }).addOnFailureListener(e -> {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -105,30 +105,10 @@ public class AdminViewDeliveries extends Fragment {
             public Holder(@NonNull @NotNull View itemView) {
                 super(itemView);
                 bind = CardDlvCompleteDeliveryBinding.bind(itemView);
-                bind.viewDelivery.setText("Action");
                 bind.viewDelivery.setOnClickListener(view -> {
                     DeliveryModel model = deliveries.get(getAdapterPosition());
-                    new AlertDialog.Builder(fragment.getContext())
-                            .setTitle("What do you want to do")
-                            .setAdapter(new ArrayAdapter<String>(fragment.getContext(),
-                                            android.R.layout.simple_list_item_1,
-                                            new String[]{"Delete", "View Status"}),
-                                    (dialogInterface, i) -> {
-                                        switch (i) {
-                                            case 0:
-                                                ref.whereEqualTo("dispatchLoc", model.dispatchLoc).whereEqualTo("startLoc", model.startLoc).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                                                    for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                                                        ref.document(document.getId()).delete();
-                                                    }
-                                                });
-                                                break;
-                                            case 1:
-                                                Toast.makeText(fragment.getContext(), model.status, Toast.LENGTH_SHORT).show();
-                                                break;
-                                        }
-                                    })
-                            .create()
-                            .show();
+                    AdminViewDeliveriesDirections.ActionAdminViewDeliveriesToAdminDeliveryDetail dir = AdminViewDeliveriesDirections.actionAdminViewDeliveriesToAdminDeliveryDetail(model);
+                    NavHostFragment.findNavController(fragment).navigate(dir);
                 });
             }
 
