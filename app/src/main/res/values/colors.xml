@@ -13,4 +13,5 @@
     <color name="red_900">#390404</color>
     <color name="green_500">#4CAF50</color>
     <color name="green_900">#1B5E20</color>
+    <color name="price_button_grey">#555</color>
 </resources>

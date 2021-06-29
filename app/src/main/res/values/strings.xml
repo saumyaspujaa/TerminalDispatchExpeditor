@@ -10,4 +10,18 @@
 
     <string name="selected_start_place_info">%1$s</string>
     <string name="selected_dispatch_place_info">%1$s</string>
+    <!-- Payment notification -->
+    <string name="channel_name">Payment Channel</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="notification_title" translatable="false">Account top up</string>
+    <string name="notification_text">Your account balance in close to zero. Top it up now.</string>
+    <string name="pay_other_method">Top-up using a different method</string>
+
+    <!-- Checkout -->
+    <string name="googlepay_status_unavailable">Unfortunately, Google Pay is not available on this device.</string>
+    <string name="payments_show_name">Successfully received payment data for %s!</string>
+    <string name="gateway_replace_name_example">"Gateway name set to \"example\" - please modify Constants.java and replace it with your own gateway."</string>
+    <string name="checkout_item_description">A minimum fee is required so that we can verify your delivery is not a fake entry and keeps our work effort better</string>
+    <string name="googlepay_button_content_description">Google Pay</string>
+    <string name="buy_with_googlepay_button_content_description">Buy with Google Pay</string>
 </resources>

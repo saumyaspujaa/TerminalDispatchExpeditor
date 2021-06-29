@@ -1,151 +1,157 @@
 package com.digipodium.tde.user;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.Toast;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.digipodium.tde.R;
-import com.stripe.android.PaymentConfiguration;
-import com.stripe.android.paymentsheet.PaymentSheet;
-import com.stripe.android.paymentsheet.PaymentSheetResult;
+import com.digipodium.tde.databinding.CheckoutAcitivityBinding;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.wallet.AutoResolveHelper;
+import com.google.android.gms.wallet.PaymentData;
+import com.google.android.gms.wallet.PaymentsClient;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-
+/**
+ * Checkout implementation for the app
+ */
 public class CheckoutActivity extends AppCompatActivity {
-    private static final String BACKEND_URL = "https://military-rightful-ton.glitch.me/checkout";
-    private static final String STRIPE_PUBLISHABLE_KEY = "pk_test_sSSEzfmRLvGndJHKhtppbbb5";
+    // Arbitrarily-picked constant integer you define to track a request for payment data activity.
+    private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
+    private static final long SHIPPING_COST_CENTS = 1 * PaymentsUtil.CENTS_IN_A_UNIT.longValue();
+    String GOOGLE_PAY_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
+    int GOOGLE_PAY_REQUEST_CODE = 123;
+    // A client for interacting with the Google Pay API.
+    private PaymentsClient paymentsClient;
 
-    private PaymentSheet paymentSheet;
+    private CheckoutAcitivityBinding layoutBinding;
+    private View googlePayButton;
 
-    private String paymentIntentClientSecret;
-    private String customerId;
-    private String ephemeralKeySecret;
+    private JSONArray garmentList;
+    private JSONObject selectedGarment;
+    private String escapedHtmlText;
 
-    private Button buyButton;
+    private static JSONObject baseConfigurationJson() {
+        try {
+            return new JSONObject()
+                    .put("apiVersion", 2)
+                    .put("apiVersionMinor", 0)
+                    .put("allowedPaymentMethods", new JSONArray().put(PaymentsUtil.getBaseCardPaymentMethod()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Initialize the Google Pay API on creation of the activity
+     *
+     * @see Activity#onCreate(android.os.Bundle)
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initializeUi();
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // value passed in AutoResolveHelper
+        if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
+            switch (resultCode) {
 
-        setContentView(R.layout.checkout_acitivity);
-        buyButton = findViewById(R.id.btnBu);
-        buyButton.setEnabled(false);
+                case Activity.RESULT_OK:
+                    String value = data.getStringExtra("response");
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(value);
+                    getStatus(list.get(0));
+                    break;
 
-        PaymentConfiguration.init(this, STRIPE_PUBLISHABLE_KEY);
+                case Activity.RESULT_CANCELED:
+                    Intent dat = new Intent();
+                    setResult(RESULT_CANCELED, dat.putExtra("msg", false));
+                    finish();
+                    break;
 
-        paymentSheet = new PaymentSheet(this, result -> {
-            onPaymentSheetResult(result);
-        });
+                case AutoResolveHelper.RESULT_ERROR:
+                    Status status = AutoResolveHelper.getStatusFromIntent(data);
+                    Intent dat2 = new Intent();
+                    setResult(RESULT_CANCELED, dat2.putExtra("msg", false));
+                    finish();
+                    break;
+            }
 
-        buyButton.setOnClickListener(v -> presentPaymentSheet());
-
-        fetchInitData();
+            // Re-enables the Google Pay payment button.
+            googlePayButton.setClickable(true);
+        }
     }
 
-    private void fetchInitData() {
-        final String requestJson = "{}";
-        final RequestBody requestBody = RequestBody.create(MediaType.get("application/json; charset=utf-8"), requestJson);
-
-        final Request request = new Request.Builder()
-                .url(BACKEND_URL + "payment-sheet")
-                .post(requestBody)
-                .build();
-
-        new OkHttpClient()
-                .newCall(request)
-                .enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        Toast.makeText(CheckoutActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(
-                            @NotNull Call call,
-                            @NotNull Response response
-                    ) throws IOException {
-                        if (!response.isSuccessful()) {
-
-                        } else {
-                            final JSONObject responseJson = parseResponse(response.body());
-
-                            paymentIntentClientSecret = responseJson.optString("paymentIntent");
-                            customerId = responseJson.optString("customer");
-                            ephemeralKeySecret = responseJson.optString("ephemeralKey");
-
-                            runOnUiThread(() -> buyButton.setEnabled(true));
-                        }
-                    }
-                });
-    }
-
-    private JSONObject parseResponse(ResponseBody responseBody) {
-        if (responseBody != null) {
-            try {
-                return new JSONObject(responseBody.string());
-            } catch (IOException | JSONException e) {
-                Log.e("App", "Error parsing response", e);
+    private void getStatus(String data) {
+        boolean isPaymentCancelled = false;
+        boolean isPaymentSuccess = false;
+        boolean paymentFailed = false;
+        String[] value = data.split("&");
+        for (int i = 0; i < value.length; i++) {
+            String[] checkString = value[i].split("=");
+            if (checkString.length >= 2) {
+                if (checkString[0].toLowerCase().equals("status")) {
+                    isPaymentSuccess = true;
+                } else {
+                    paymentFailed = true;
+                }
+            } else {
+                isPaymentCancelled = true;
             }
         }
-        return new JSONObject();
-    }
-
-    // continued from above
-
-    private void presentPaymentSheet() {
-        paymentSheet.presentWithPaymentIntent(
-                paymentIntentClientSecret,
-                new PaymentSheet.Configuration(
-                        "TDE",
-                        new PaymentSheet.CustomerConfiguration(
-                                customerId,
-                                ephemeralKeySecret
-                        )
-                )
-        );
-    }
-
-    private void onPaymentSheetResult(
-            final PaymentSheetResult paymentSheetResult
-    ) {
-        if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
-            Toast.makeText(
-                    this,
-                    "Payment Canceled",
-                    Toast.LENGTH_LONG
-            ).show();
-        } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
-            Toast.makeText(
-                    this,
-                    "Payment Failed. See logcat for details.",
-                    Toast.LENGTH_LONG
-            ).show();
-
-            Log.e("App", "Got error: ", ((PaymentSheetResult.Failed) paymentSheetResult).getError());
-        } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            Toast.makeText(
-                    this,
-                    "Payment Complete",
-                    Toast.LENGTH_LONG
-            ).show();
+        Intent dat = new Intent();
+        if (isPaymentSuccess) {
+            setResult(RESULT_OK, dat.putExtra("msg", true));
+        } else if (isPaymentCancelled) {
+            setResult(RESULT_CANCELED, dat.putExtra("msg", false));
+        } else if (paymentFailed) {
+            setResult(RESULT_CANCELED, dat.putExtra("msg", false));
         }
     }
+
+
+    private void initializeUi() {
+        layoutBinding = CheckoutAcitivityBinding.inflate(getLayoutInflater());
+        setContentView(layoutBinding.getRoot());
+        googlePayButton = layoutBinding.googlePayButton.getRoot();
+        googlePayButton.setOnClickListener(view -> {
+
+
+            Uri uri =
+                    new Uri.Builder()
+                            .scheme("upi")
+                            .authority("pay")
+                            .appendQueryParameter("pa", "xaidmetamorphos@oksbi")
+                            .appendQueryParameter("pn", "TDE app")
+                            .appendQueryParameter("mc", "your-merchant-code")
+                            .appendQueryParameter("tr", "your-transaction-ref-id")
+                            .appendQueryParameter("tn", "the minimum service pay")
+                            .appendQueryParameter("am", "100")
+                            .appendQueryParameter("cu", "INR")
+                            .build();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(uri);
+            intent.setPackage(GOOGLE_PAY_PACKAGE_NAME);
+            startActivityForResult(intent, GOOGLE_PAY_REQUEST_CODE);
+        });
+    }
+
 
 }

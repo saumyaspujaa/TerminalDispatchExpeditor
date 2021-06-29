@@ -70,6 +70,7 @@ public class UserCreateNewDeliveryRequest extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bind = FragmentUserCreateNewDeliveryRequestBinding.bind(view);
         bind.btnConfirmDeliveryCreation.setOnClickListener(view1 -> {
+
             String deliveryDetails = bind.deliveryDetail.getText().toString();
             String startLocationAddr = bind.textStartLoc.getText().toString();
             String dispatchLocationAddr = bind.textDispatchLoc.getText().toString();
@@ -213,14 +214,13 @@ public class UserCreateNewDeliveryRequest extends Fragment {
                 bind.textDispatchLoc.setText(String.format(getString(R.string.selected_dispatch_place_info), carmenFeature.placeName()));
             }
         }
-        if (requestCode == 22 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 22 && (resultCode == Activity.RESULT_OK || resultCode == Activity.RESULT_CANCELED)) {
             Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
 
             new AlertDialog.Builder(getActivity())
                     .setTitle("Success")
                     .setMessage("Created a delivery job, you will be notified as soon as someone from TDE accepts the job. If your job is not accepted in one week, it will be removed")
                     .setPositiveButton("Continue", (dialogInterface, i) -> {
-
                         NavHostFragment.findNavController(this).navigate(R.id.action_createNewDeliveryRequest_to_userDashboardFragment);
                     }).create().show();
         }

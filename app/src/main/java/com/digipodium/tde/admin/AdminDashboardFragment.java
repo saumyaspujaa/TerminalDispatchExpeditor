@@ -1,15 +1,14 @@
 package com.digipodium.tde.admin;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentAdminDashboardBinding;
@@ -38,6 +37,10 @@ public class AdminDashboardFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_adminDashboardFragment_to_userChoiceFragment2);
         });
+        binding.cardViewUser.setOnClickListener(view1 -> NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_AaminViewUsers));
+        binding.cardViewDeliveries.setOnClickListener(view1 -> NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_adminViewDeliveries));
+        binding.cardViewReports.setOnClickListener(view1 -> NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_adminViewReports));
+        binding.cardViewRequest.setOnClickListener(view1 -> NavHostFragment.findNavController(this).navigate(R.id.action_adminDashboardFragment_to_adminViewDeliveryPerson));
 
     }
 }

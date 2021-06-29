@@ -54,5 +54,9 @@ public class UserDashboardFragment extends Fragment {
         binding.viewHistory.setOnClickListener(view1 -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_userDashboardFragment_to_userViewHistory);
         });
+        binding.report.setOnClickListener(view1 -> {
+            NavHostFragment.findNavController(this).navigate(R.id.action_userDashboardFragment_to_reportFeeback);
+        });
+
     }
 }

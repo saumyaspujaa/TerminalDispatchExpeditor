@@ -26,6 +26,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".user.CheckoutActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 
 </manifest>
