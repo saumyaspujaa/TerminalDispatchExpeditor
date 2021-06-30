@@ -11,13 +11,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentAdminDeliveryDetailBinding;
 import com.digipodium.tde.models.DeliveryModel;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +60,18 @@ public class AdminDeliveryDetail extends Fragment {
         } catch (Exception e) {
             bind.textDate.setText("");
         }
+        bind.fabDelete.setOnClickListener(view1 -> {
+            Task<QuerySnapshot> task = db.collection("deliveries").whereEqualTo("img", model.img).whereEqualTo("dispatchLoc", model.dispatchLoc).whereEqualTo("startLoc", model.startLoc).get();
+            task.addOnSuccessListener(queryDocumentSnapshots -> {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                String id = documentSnapshot.getId();
+                Task<Void> deliveries = db.collection("deliveries").document(id).delete();
+                deliveries.addOnSuccessListener(unused -> {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_adminDeliveryDetail_to_adminViewDeliveries);
+                });
+
+            });
+        });
     }
 
     public Bitmap stringToBitMap(String encodedString) {

@@ -180,6 +180,9 @@
             <argument
                 android:name="model"
                 app:argType="com.digipodium.tde.models.DeliveryModel" />
+            <action
+                android:id="@+id/action_adminDeliveryDetail_to_adminViewDeliveries"
+                app:destination="@id/adminViewDeliveries" />
         </fragment>
         <fragment
             android:id="@+id/adminDeliveryPersonDetail"
