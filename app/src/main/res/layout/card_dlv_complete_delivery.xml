@@ -10,7 +10,6 @@
     android:layout_marginTop="4dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="#A5D6A7"
     app:cardCornerRadius="6dp"
     app:cardElevation="6dp">
 
@@ -20,58 +19,68 @@
 
         <ImageView
             android:id="@+id/imgItem"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:adjustViewBounds="true"
             android:background="@drawable/mapbox_color_text_cursor"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_card_giftcard_24" />
 
         <TextView
+            android:id="@+id/txtDeliveryDispatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/mapbox_ic_place"
+            android:drawablePadding="8dp"
+            android:text="Dispatch Location"
+            android:textColor="#3F51B5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryStart" />
+
+        <TextView
             android:id="@+id/textReportTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="7dp"
             android:text="Delivery title"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/imgItem"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/txtDeliveryStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
         <TextView
             android:id="@+id/txtDeliveryStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            android:drawableLeft="@drawable/mapbox_ic_place"
+            android:drawablePadding="8dp"
             android:text="Start Location"
             android:textColor="#F44336"
-            app:layout_constraintStart_toEndOf="@+id/imgItem"
+            app:layout_constraintBottom_toTopOf="@+id/txtDeliveryDispatch"
+            app:layout_constraintStart_toStartOf="@+id/textReportTitle"
             app:layout_constraintTop_toBottomOf="@+id/textReportTitle" />
 
         <TextView
-            android:id="@+id/txtDeliveryDispatch"
+            android:id="@+id/textpriceamt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Dispatch Location"
-            android:textColor="#3F51B5"
-            app:layout_constraintStart_toEndOf="@+id/imgItem"
-            app:layout_constraintTop_toBottomOf="@+id/txtDeliveryStart" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/viewDelivery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_shape_green"
-            android:text="View"
+            android:drawableLeft="@drawable/ic_baseline_attach_money_24"
+            android:drawableTint="@color/red_500"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#E91E63"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDeliveryDispatch" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

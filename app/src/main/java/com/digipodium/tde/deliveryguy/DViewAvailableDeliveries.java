@@ -34,16 +34,14 @@ import java.util.List;
 
 public class DViewAvailableDeliveries extends Fragment {
 
-    private FirebaseAuth auth;
-    private CollectionReference dlvPersonDb;
     private FragmentDViewAvailableDeliveriesBinding bind;
     private FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        dlvPersonDb = db.collection("DeliveryPerson");
+        CollectionReference dlvPersonDb = db.collection("DeliveryPerson");
         return inflater.inflate(R.layout.fragment_d_view_available_deliveries, container, false);
     }
 
