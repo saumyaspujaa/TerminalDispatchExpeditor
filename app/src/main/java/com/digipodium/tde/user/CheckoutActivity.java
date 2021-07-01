@@ -4,22 +4,14 @@ package com.digipodium.tde.user;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.digipodium.tde.databinding.CheckoutAcitivityBinding;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.wallet.AutoResolveHelper;
-import com.google.android.gms.wallet.PaymentData;
-import com.google.android.gms.wallet.PaymentsClient;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -28,41 +20,17 @@ import java.util.ArrayList;
  */
 public class CheckoutActivity extends AppCompatActivity {
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
-    private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private static final long SHIPPING_COST_CENTS = 1 * PaymentsUtil.CENTS_IN_A_UNIT.longValue();
+
     String GOOGLE_PAY_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
     int GOOGLE_PAY_REQUEST_CODE = 123;
-    // A client for interacting with the Google Pay API.
-    private PaymentsClient paymentsClient;
-
     private CheckoutAcitivityBinding layoutBinding;
     private View googlePayButton;
+    private int amount;
 
-    private JSONArray garmentList;
-    private JSONObject selectedGarment;
-    private String escapedHtmlText;
-
-    private static JSONObject baseConfigurationJson() {
-        try {
-            return new JSONObject()
-                    .put("apiVersion", 2)
-                    .put("apiVersionMinor", 0)
-                    .put("allowedPaymentMethods", new JSONArray().put(PaymentsUtil.getBaseCardPaymentMethod()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Initialize the Google Pay API on creation of the activity
-     *
-     * @see Activity#onCreate(android.os.Bundle)
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        amount = getIntent().getIntExtra("amount", 100);
         initializeUi();
     }
 
@@ -132,8 +100,6 @@ public class CheckoutActivity extends AppCompatActivity {
         setContentView(layoutBinding.getRoot());
         googlePayButton = layoutBinding.googlePayButton.getRoot();
         googlePayButton.setOnClickListener(view -> {
-
-
             Uri uri =
                     new Uri.Builder()
                             .scheme("upi")
@@ -143,7 +109,7 @@ public class CheckoutActivity extends AppCompatActivity {
                             .appendQueryParameter("mc", "your-merchant-code")
                             .appendQueryParameter("tr", "your-transaction-ref-id")
                             .appendQueryParameter("tn", "the minimum service pay")
-                            .appendQueryParameter("am", "100")
+                            .appendQueryParameter("am", String.valueOf(amount))
                             .appendQueryParameter("cu", "INR")
                             .build();
             Intent intent = new Intent(Intent.ACTION_VIEW);

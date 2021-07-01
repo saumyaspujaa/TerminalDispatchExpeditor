@@ -55,6 +55,7 @@ public class UserCreateNewDeliveryRequest extends Fragment {
     private LatLng LUCKNOW_COORDINATES;
     private FirebaseFirestore fs;
     private FirebaseAuth auth;
+    private int price;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,8 +76,13 @@ public class UserCreateNewDeliveryRequest extends Fragment {
             String startLocationAddr = bind.textStartLoc.getText().toString();
             String dispatchLocationAddr = bind.textDispatchLoc.getText().toString();
             Uri fullPhotoUri = (Uri) bind.productImg.getTag();
+            String priceStr = bind.textPrice.getText().toString();
             bind.pbCreate.setVisibility(View.VISIBLE);
-            if (deliveryDetails.length() > 10 && startLocationAddr != null && dispatchLocationAddr != null && fullPhotoUri != null) {
+            if (deliveryDetails.length() > 10 && startLocationAddr != null && dispatchLocationAddr != null && fullPhotoUri != null && priceStr.length() > 2) {
+                price = Integer.parseInt(priceStr);
+                if (price < 100) {
+                    price = 100;
+                }
                 String imgString = encodeImgToString(fullPhotoUri);
                 double[] dispatchCoords = (double[]) bind.textDispatchLoc.getTag();
                 double[] startCoords = (double[]) bind.textStartLoc.getTag();
@@ -95,11 +101,14 @@ public class UserCreateNewDeliveryRequest extends Fragment {
                             Arrays.toString(startCoords),
                             Arrays.toString(dispatchCoords),
                             imgString,
+                            price,
                             "created"
                     );
                     fs.collection(COL_DELIVERY).add(delivery).addOnSuccessListener(documentReference -> {
                         bind.pbCreate.setVisibility(View.GONE);
-                        startActivityForResult(new Intent(getActivity(), CheckoutActivity.class), 22);
+                        Intent intent = new Intent(getActivity(), CheckoutActivity.class);
+                        intent.putExtra("amount", price);
+                        startActivityForResult(intent, 22);
                     }).addOnFailureListener(e -> {
                         bind.pbCreate.setVisibility(View.GONE);
                         new AlertDialog.Builder(getActivity())
@@ -214,6 +223,9 @@ public class UserCreateNewDeliveryRequest extends Fragment {
                 bind.textDispatchLoc.setText(String.format(getString(R.string.selected_dispatch_place_info), carmenFeature.placeName()));
             }
         }
+        /*
+         * We have cancelled the payment requirement right now
+         * */
         if (requestCode == 22 && (resultCode == Activity.RESULT_OK || resultCode == Activity.RESULT_CANCELED)) {
             Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
 

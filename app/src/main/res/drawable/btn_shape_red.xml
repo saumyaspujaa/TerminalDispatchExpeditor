@@ -4,7 +4,7 @@
         <inset android:inset="2dp">
             <shape>
                 <solid android:color="@color/red_900" />
-                <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
+                <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
                 <corners android:radius="4dp" />
             </shape>
         </inset>
@@ -14,7 +14,7 @@
             <shape>
                 <solid android:color="@color/red_500" />
                 <corners android:radius="4dp" />
-                <padding android:bottom="8dp" android:left="16dp" android:right="16dp" android:top="8dp" />
+                <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
             </shape>
         </inset>
     </item>

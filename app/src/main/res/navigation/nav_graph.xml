@@ -157,6 +157,9 @@
             <argument
                 android:name="detail"
                 app:argType="string" />
+            <action
+                android:id="@+id/action_adminReportDetailFragment_to_adminViewReports"
+                app:destination="@id/adminViewReports" />
         </fragment>
         <fragment
             android:id="@+id/adminViewReports"
@@ -171,7 +174,11 @@
             android:id="@+id/adminUserDetailFragment"
             android:name="com.digipodium.tde.admin.AdminUserDetailFragment"
             android:label="fragment_admin_user_detail"
-            tools:layout="@layout/fragment_admin_user_detail" />
+            tools:layout="@layout/fragment_admin_user_detail">
+            <action
+                android:id="@+id/action_adminUserDetailFragment_to_AaminViewUsers"
+                app:destination="@id/AaminViewUsers" />
+        </fragment>
         <fragment
             android:id="@+id/adminDeliveryDetail"
             android:name="com.digipodium.tde.admin.AdminDeliveryDetail"
@@ -192,6 +199,9 @@
             <argument
                 android:name="uid"
                 app:argType="string" />
+            <action
+                android:id="@+id/action_adminDeliveryPersonDetail_to_adminViewDeliveryPerson"
+                app:destination="@id/adminViewDeliveryPerson" />
         </fragment>
     </navigation>
     <navigation
@@ -201,12 +211,32 @@
             android:id="@+id/DCurrentDelivery"
             android:name="com.digipodium.tde.deliveryguy.DCurrentDelivery"
             android:label="fragment_d_current_delivery"
-            tools:layout="@layout/fragment_d_current_delivery" />
+            tools:layout="@layout/fragment_d_current_delivery">
+            <action
+                android:id="@+id/action_DCurrentDelivery_to_DNavigationMap"
+                app:destination="@id/DNavigationMap" />
+            <argument
+                android:name="deliveryId"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_DCurrentDelivery_to_deliveryPersonDashboardFragment"
+                app:destination="@id/deliveryPersonDashboardFragment" />
+        </fragment>
         <fragment
             android:id="@+id/DNavigationMap"
             android:name="com.digipodium.tde.deliveryguy.DNavigationMap"
             android:label="fragment_d_navigation_map"
-            tools:layout="@layout/fragment_d_navigation_map" />
+            tools:layout="@layout/fragment_d_navigation_map">
+            <action
+                android:id="@+id/action_DNavigationMap_to_deliverDetailFragment"
+                app:destination="@id/deliverDetailFragment" />
+            <action
+                android:id="@+id/action_DNavigationMap_to_DCurrentDelivery"
+                app:destination="@id/DCurrentDelivery" />
+            <argument
+                android:name="deliveryId"
+                app:argType="string" />
+        </fragment>
         <fragment
             android:id="@+id/DEditProfile"
             android:name="com.digipodium.tde.deliveryguy.DEditProfile"
@@ -221,7 +251,11 @@
             android:id="@+id/DViewAvailableDeliveries"
             android:name="com.digipodium.tde.deliveryguy.DViewAvailableDeliveries"
             android:label="fragment_d_view_available_deliveries"
-            tools:layout="@layout/fragment_d_view_available_deliveries" />
+            tools:layout="@layout/fragment_d_view_available_deliveries">
+            <action
+                android:id="@+id/action_DViewAvailableDeliveries_to_deliverDetailFragment"
+                app:destination="@id/deliverDetailFragment" />
+        </fragment>
         <fragment
             android:id="@+id/deliveryPersonDashboardFragment"
             android:name="com.digipodium.tde.deliveryguy.DeliveryPersonDashboardFragment"
@@ -248,6 +282,21 @@
             <action
                 android:id="@+id/action_deliveryPersonDashboardFragment_to_userChoiceFragment2"
                 app:destination="@id/userChoiceFragment2" />
+        </fragment>
+        <fragment
+            android:id="@+id/deliverDetailFragment"
+            android:name="com.digipodium.tde.deliveryguy.DeliverDetailFragment"
+            android:label="fragment_deliver_detail"
+            tools:layout="@layout/fragment_deliver_detail">
+            <action
+                android:id="@+id/action_deliverDetailFragment_to_DViewAvailableDeliveries"
+                app:destination="@id/DViewAvailableDeliveries" />
+            <argument
+                android:name="deliveryId"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_deliverDetailFragment_to_DNavigationMap"
+                app:destination="@id/DNavigationMap" />
         </fragment>
     </navigation>
     <navigation

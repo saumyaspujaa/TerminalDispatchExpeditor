@@ -8,6 +8,18 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 public class DeliveryModel implements Parcelable {
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<DeliveryModel> CREATOR = new Parcelable.Creator<DeliveryModel>() {
+        @Override
+        public DeliveryModel createFromParcel(Parcel in) {
+            return new DeliveryModel(in);
+        }
+
+        @Override
+        public DeliveryModel[] newArray(int size) {
+            return new DeliveryModel[size];
+        }
+    };
     public String status;
     public String fullName;
     public String phone;
@@ -20,9 +32,9 @@ public class DeliveryModel implements Parcelable {
     public String startLoc;
     public String dispatchLoc;
     public String img;
-
     @ServerTimestamp
     public Date timestamp;
+    public int price;
 
     public DeliveryModel() {
 
@@ -31,7 +43,7 @@ public class DeliveryModel implements Parcelable {
     public DeliveryModel(String fullName, String phone, String address, String city,
                          String email, String deliveryDetails, String startLocationAddr,
                          String dispatchLocationAddr, String startLoc, String dispatchLoc,
-                         String img, String status) {
+                         String img, int price, String status) {
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
@@ -45,6 +57,7 @@ public class DeliveryModel implements Parcelable {
         this.img = img;
         this.timestamp = new Date(System.currentTimeMillis());
         this.status = status;
+        this.price = price;
     }
 
     protected DeliveryModel(Parcel in) {
@@ -60,6 +73,7 @@ public class DeliveryModel implements Parcelable {
         startLoc = in.readString();
         dispatchLoc = in.readString();
         img = in.readString();
+        price = in.readInt();
         long tmpTimestamp = in.readLong();
         timestamp = tmpTimestamp != -1 ? new Date(tmpTimestamp) : null;
     }
@@ -83,19 +97,7 @@ public class DeliveryModel implements Parcelable {
         dest.writeString(startLoc);
         dest.writeString(dispatchLoc);
         dest.writeString(img);
+        dest.writeInt(price);
         dest.writeLong(timestamp != null ? timestamp.getTime() : -1L);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<DeliveryModel> CREATOR = new Parcelable.Creator<DeliveryModel>() {
-        @Override
-        public DeliveryModel createFromParcel(Parcel in) {
-            return new DeliveryModel(in);
-        }
-
-        @Override
-        public DeliveryModel[] newArray(int size) {
-            return new DeliveryModel[size];
-        }
-    };
 }

@@ -60,7 +60,7 @@ public class AdminDeliveryDetail extends Fragment {
         } catch (Exception e) {
             bind.textDate.setText("");
         }
-        bind.fabDelete.setOnClickListener(view1 -> {
+        bind.fabComplete.setOnClickListener(view1 -> {
             Task<QuerySnapshot> task = db.collection("deliveries").whereEqualTo("img", model.img).whereEqualTo("dispatchLoc", model.dispatchLoc).whereEqualTo("startLoc", model.startLoc).get();
             task.addOnSuccessListener(queryDocumentSnapshots -> {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
