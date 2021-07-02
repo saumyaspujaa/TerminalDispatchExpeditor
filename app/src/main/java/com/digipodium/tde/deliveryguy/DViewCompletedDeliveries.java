@@ -21,6 +21,8 @@ import com.digipodium.tde.databinding.CardDlvCompleteDeliveryBinding;
 import com.digipodium.tde.databinding.FragmentDViewCompletedDeliveriesBinding;
 import com.digipodium.tde.models.DeliveryModel;
 import com.digipodium.tde.models.PaymentModel;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,7 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class DViewCompletedDeliveries extends Fragment {
@@ -79,8 +80,13 @@ public class DViewCompletedDeliveries extends Fragment {
                     deliveries.add(model);
                 }
             }
-            bind.progressBar3.setVisibility(View.GONE);
-            adapter.notifyDataSetChanged();
+            if (deliveries.size() > 0) {
+                bind.progressBar3.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
+            } else {
+                Snackbar.make(bind.getRoot(), "no completed delivery data available", BaseTransientBottomBar.LENGTH_INDEFINITE).show();
+            }
+
         }).addOnFailureListener(e -> {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });

@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentAdminViewReportsBinding;
 import com.digipodium.tde.models.ReportModel;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -55,7 +57,11 @@ public class AdminViewReports extends Fragment {
                 ReportModel report = document.toObject(ReportModel.class);
                 mDataList.add(report);
             }
-            adapter.notifyDataSetChanged();
+            if (mDataList.size() == 0) {
+                Snackbar.make(bind.getRoot(), "No reports found", BaseTransientBottomBar.LENGTH_INDEFINITE).show();
+            } else {
+                adapter.notifyDataSetChanged();
+            }
         });
     }
 

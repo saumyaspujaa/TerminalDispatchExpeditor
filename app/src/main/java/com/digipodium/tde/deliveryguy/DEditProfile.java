@@ -1,19 +1,19 @@
 package com.digipodium.tde.deliveryguy;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.digipodium.tde.Constants;
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentDEditProfileBinding;
-import com.digipodium.tde.models.UserModel;
+import com.digipodium.tde.models.DeliveryPersonModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,6 +26,7 @@ public class DEditProfile extends Fragment {
             FragmentDEditProfileBinding bind;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    private DeliveryPersonModel person;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,16 +41,16 @@ public class DEditProfile extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bind = FragmentDEditProfileBinding.bind(view);
         String uid = auth.getCurrentUser().getUid();
-        DocumentReference ref = db.collection("Users").document(uid);
+        DocumentReference ref = db.collection(Constants.COL_DLV_PERSON).document(uid);
         Toast.makeText(getContext(), uid, Toast.LENGTH_SHORT).show();
         ref.get().addOnSuccessListener(documentSnapshot -> {
-            UserModel userModel = documentSnapshot.toObject(UserModel.class);
-            bind.editCity.setText(userModel.city);
-            bind.editAadhar.setText(userModel.aadhar);
-            bind.editAddr.setText(userModel.address);
-            bind.editEmail.setText(userModel.email);
-            bind.editFullname.setText(userModel.fullName);
-            bind.editPhone.setText(userModel.phone);
+            person = documentSnapshot.toObject(DeliveryPersonModel.class);
+            bind.editCity.setText(person.city);
+            bind.editAadhar.setText(person.aadhar);
+            bind.editAddr.setText(person.address);
+            bind.editEmail.setText(person.email);
+            bind.editFullname.setText(person.fullName);
+            bind.editPhone.setText(person.phone);
             bind.editEmail.setEnabled(false);
             bind.editAadhar.setEnabled(false);
         });
@@ -61,7 +62,7 @@ public class DEditProfile extends Fragment {
             String aadhar = bind.editAadhar.getText().toString();
             bind.fab.setVisibility(View.GONE);
             bind.status.setVisibility(View.VISIBLE);
-            ref.set(new UserModel(name, bind.editEmail.getText().toString(), aadhar, phone, city, addr, uid))
+            ref.set(new DeliveryPersonModel(name, phone, bind.editEmail.getText().toString(), city, aadhar, addr, person.age, person.transport, uid, person.password, person.approved, person.ondelivery))
                     .addOnSuccessListener(unused -> {
                         bind.status.setVisibility(View.GONE);
                         bind.fab.setVisibility(View.VISIBLE);

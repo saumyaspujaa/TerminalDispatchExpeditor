@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.digipodium.tde.Constants;
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentDNavigationMapBinding;
 import com.digipodium.tde.models.DeliveryModel;
@@ -21,10 +23,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
+import com.mapbox.api.directions.v5.models.BannerInstructions;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.navigation.base.internal.VoiceUnit;
 import com.mapbox.navigation.core.MapboxNavigation;
 import com.mapbox.navigation.ui.NavigationViewOptions;
 import com.mapbox.navigation.ui.OnNavigationReadyCallback;
@@ -56,7 +60,7 @@ public class DNavigationMap extends Fragment implements OnNavigationReadyCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
-        deliveryDb = FirebaseFirestore.getInstance().collection("deliveries");
+        deliveryDb = FirebaseFirestore.getInstance().collection(Constants.COL_DELIVERY);
         Mapbox.getInstance(getActivity(), getString(R.string.mapbox_access_token));
         return inflater.inflate(R.layout.fragment_d_navigation_map, container, false);
     }
@@ -64,11 +68,11 @@ public class DNavigationMap extends Fragment implements OnNavigationReadyCallbac
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bind = FragmentDNavigationMapBinding.bind(view);
         deliveryId = DNavigationMapArgs.fromBundle(getArguments()).getDeliveryId();
         Task<DocumentSnapshot> task = deliveryDb.document(deliveryId).get();
         task.addOnSuccessListener(documentSnapshot -> {
             deliveryModel = documentSnapshot.toObject(DeliveryModel.class);
-            bind = FragmentDNavigationMapBinding.bind(view);
             bind.navigationView.onCreate(savedInstanceState);
             bind.navigationView.initialize(this);
         });
@@ -78,95 +82,65 @@ public class DNavigationMap extends Fragment implements OnNavigationReadyCallbac
     @NotNull
     private Point getPoint(String startLoc) {
         String[] coordStr = startLoc.split(",");
-        double lat1 = Double.parseDouble(coordStr[0].substring(2, coordStr.length));
-        double lng1 = Double.parseDouble(coordStr[1].substring(0, coordStr[1].length() - 2));
+        String substring = coordStr[0].substring(1, coordStr[0].length());
+        double lat1 = Double.parseDouble(substring);
+        String substring1 = coordStr[1].substring(1, coordStr[1].length() - 2);
+        double lng1 = Double.parseDouble(substring1);
         return Point.fromLngLat(lat1, lng1);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        bind.navigationView.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        bind.navigationView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        bind.navigationView.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        bind.navigationView.onStop();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        bind.navigationView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        bind.navigationView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        bind.navigationView.onLowMemory();
     }
 
 
     @Override
     public void onNavigationReady(boolean isRunning) {
+        navigationMapboxMap = bind.navigationView.retrieveNavigationMapboxMap();
+        mapboxNavigation = bind.navigationView.retrieveMapboxNavigation();
+        startPoint = getPoint(deliveryModel.startLoc);
+        endPoint = getPoint(deliveryModel.dispatchLoc);
+        MapboxDirections directions = MapboxDirections.builder()
+                .accessToken(getString(R.string.mapbox_access_token))
+                .origin(startPoint)
+                .steps(true)
+                .destination(endPoint)
+                .overview(DirectionsCriteria.OVERVIEW_FULL)
+                .profile(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC)
+                .voiceInstructions(true)
+                .voiceUnits(VoiceUnit.METRIC)
+                .bannerInstructions(true)
+                .alternatives(true)
+                .enableRefresh(true)
+                .build();
+        directions.enqueueCall(new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                if (response.body() == null) {
+                    alert("no Routes found", "make sure you set the right user and access token.", "close navigation").show();
+                } else if (response.body().routes().size() < 1) {
+                    alert("Location not found", "the direction could not be retrieved", "close navigation").show();
+                }
+                directionsRoute = response.body().routes().get(0);
+                NavigationViewOptions op = NavigationViewOptions.builder(getActivity())
+                        .directionsRoute(directionsRoute)
+                        .navigationListener(DNavigationMap.this)
+                        .build();
+                try {
+                    bind.navigationView.startNavigation(op);
+                    bind.dataLoadProgress.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                alert("Location not found", t.getMessage(), "close navigation").show();
+            }
+        });
         if (isRunning) {
             if (bind.navigationView.retrieveNavigationMapboxMap() != null) {
-                navigationMapboxMap = bind.navigationView.retrieveNavigationMapboxMap();
-                mapboxNavigation = bind.navigationView.retrieveMapboxNavigation();
-                startPoint = getPoint(deliveryModel.startLoc);
-                endPoint = getPoint(deliveryModel.dispatchLoc);
-
-                MapboxDirections client = MapboxDirections.builder()
-                        .origin(startPoint)
-                        .destination(endPoint)
-                        .profile(DirectionsCriteria.PROFILE_DRIVING)
-                        .accessToken(getString(R.string.mapbox_access_token))
-                        .build();
-                client.enqueueCall(new Callback<DirectionsResponse>() {
-                    @Override
-                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
-                        if (response.body() == null) {
-                            alert("no Routes found", "make sure you set the right user and access token.", "close navigation").show();
-                        } else if (response.body().routes().size() < 1) {
-                            alert("Location not found", "the direction could not be retrieved", "close navigation").show();
-                        }
-                        directionsRoute = response.body().routes().get(0);
-                        NavigationViewOptions op = NavigationViewOptions.builder(getActivity())
-                                .waynameChipEnabled(true)
-                                .directionsRoute(directionsRoute)
-                                .navigationListener(DNavigationMap.this)
-                                .build();
-                        bind.navigationView.startNavigation(op);
-                        bind.dataLoadProgress.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
-                        alert("Location not found", t.getMessage(), "close navigation").show();
-                    }
-                });
-
 
             }
+        } else {
+            Toast.makeText(getActivity(), "not running", Toast.LENGTH_SHORT).show();
         }
     }
 

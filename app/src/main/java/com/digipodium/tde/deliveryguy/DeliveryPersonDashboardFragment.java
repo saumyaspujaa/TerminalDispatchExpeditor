@@ -13,6 +13,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentDeliveryPersonDashboardBinding;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,8 +49,12 @@ public class DeliveryPersonDashboardFragment extends Fragment {
         binding.currentRequest.setOnClickListener(view1 -> {
             try {
                 activeDeliverDb.whereEqualTo("personId", Objects.requireNonNull(auth.getCurrentUser()).getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    String deliveryId = queryDocumentSnapshots.getDocuments().get(0).getId();
-                    NavHostFragment.findNavController(this).navigate(DeliveryPersonDashboardFragmentDirections.actionDeliveryPersonDashboardFragmentToDCurrentDelivery(deliveryId));
+                    if (queryDocumentSnapshots.getDocuments().size() == 1) {
+                        String deliveryId = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        NavHostFragment.findNavController(this).navigate(DeliveryPersonDashboardFragmentDirections.actionDeliveryPersonDashboardFragmentToDCurrentDelivery(deliveryId));
+                    } else {
+                        Snackbar.make(binding.getRoot(), "no current delivery data available", BaseTransientBottomBar.LENGTH_INDEFINITE).show();
+                    }
                 });
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "no current delivery data available", Toast.LENGTH_SHORT).show();
