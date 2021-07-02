@@ -2,6 +2,10 @@ package com.digipodium.tde.admin;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,23 +14,23 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.digipodium.tde.R;
 import com.digipodium.tde.databinding.FragmentAdminViewReportsBinding;
-import com.digipodium.tde.models.Report;
+import com.digipodium.tde.models.ReportModel;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import static com.digipodium.tde.Constants.COL_REPORTS;
+
 public class AdminViewReports extends Fragment {
 
-    private ArrayList<Report> mDataList;
+    private ArrayList<ReportModel> mDataList;
     private FragmentAdminViewReportsBinding bind;
+    private ItemAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,21 +43,28 @@ public class AdminViewReports extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bind = FragmentAdminViewReportsBinding.bind(view);
         bind.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ItemAdapter adapter = new ItemAdapter(getActivity(), mDataList);
+        adapter = new ItemAdapter(getActivity(), mDataList);
         bind.recyclerView.setAdapter(adapter);
         initializeData();
     }
 
     private void initializeData() {
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(COL_REPORTS).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                ReportModel report = document.toObject(ReportModel.class);
+                mDataList.add(report);
+            }
+            adapter.notifyDataSetChanged();
+        });
     }
 
     public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
-        private final ArrayList<Report> mDatalist;
+        private final ArrayList<ReportModel> mDatalist;
         private LayoutInflater inflater;
 
-        public ItemAdapter(Context c, ArrayList<Report> mDatalist) {
+        public ItemAdapter(Context c, ArrayList<ReportModel> mDatalist) {
             this.mDatalist = mDatalist;
             inflater = LayoutInflater.from(c);
         }
@@ -66,7 +77,7 @@ public class AdminViewReports extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ItemAdapter.ItemHolder holder, int position) {
-            Report report = mDatalist.get(position);
+            ReportModel report = mDatalist.get(position);
             holder.bindTo(report);
         }
 
@@ -86,14 +97,15 @@ public class AdminViewReports extends Fragment {
 
                 this.adapter = adapter;
                 itemView.setOnClickListener(view -> {
-                    Report report = mDatalist.get(getAdapterPosition());
-                    AdminViewReportsDirections.ActionAdminViewReportsToAdminReportDetailFragment directions = AdminViewReportsDirections.actionAdminViewReportsToAdminReportDetailFragment(report.title, report.detail);
+                    ReportModel report = mDatalist.get(getAdapterPosition());
+                    AdminViewReportsDirections.ActionAdminViewReportsToAdminReportDetailFragment directions = AdminViewReportsDirections
+                            .actionAdminViewReportsToAdminReportDetailFragment(report.subject, report.detail, report.uid);
                     NavHostFragment.findNavController(AdminViewReports.this).navigate(directions);
                 });
             }
 
-            void bindTo(Report report) {
-                textReportTitle.setText(report.title);
+            void bindTo(ReportModel report) {
+                textReportTitle.setText(report.subject);
             }
         }
     }

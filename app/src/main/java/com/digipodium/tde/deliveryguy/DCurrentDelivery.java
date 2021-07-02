@@ -1,9 +1,12 @@
 package com.digipodium.tde.deliveryguy;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class DCurrentDelivery extends Fragment {
 
 
@@ -39,6 +44,7 @@ public class DCurrentDelivery extends Fragment {
     private CollectionReference paymentDb;
     private CollectionReference dlvPersonDb;
     private String uid;
+    private String deliveryId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +62,7 @@ public class DCurrentDelivery extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind = FragmentDCurrentDeliveryBinding.bind(view);
-        String deliveryId = DCurrentDeliveryArgs.fromBundle(getArguments()).getDeliveryId();
+        deliveryId = DCurrentDeliveryArgs.fromBundle(getArguments()).getDeliveryId();
         Task<DocumentSnapshot> task = deliveryDb.document(deliveryId).get();
         task.addOnSuccessListener(documentSnapshot -> {
             model = documentSnapshot.toObject(DeliveryModel.class);
@@ -86,7 +92,9 @@ public class DCurrentDelivery extends Fragment {
                         .setPositiveButton("Task complete", (dialogInterface, i) -> deliveryDb.document(deliveryId).update("status", "selected").addOnSuccessListener(unused -> activeDeliverDb.document(deliveryId).delete().addOnSuccessListener(unused1 -> deliveryDb.document(deliveryId).update("status", "complete").addOnSuccessListener(unused2 -> dlvPersonDb.document(uid).update("ondelivery", false).addOnSuccessListener(unused3 -> {
                             PaymentModel pay = new PaymentModel(uid, deliveryId, model.price, false);
                             paymentDb.document(auth.getCurrentUser().getUid()).collection("tasks").add(pay).addOnSuccessListener(unused4 -> {
-                                Toast.makeText(getActivity(), "Transaction completed", Toast.LENGTH_SHORT).show();
+                                String notificationMsg = "Deliver completed for " + model.fullName + "\n delivery product at " + model.dispatchLocationAddr;
+                                String emailMsg = "Deliver completed for " + model.fullName + "\n delivery product from" + model.startLocationAddr + "to" + model.dispatchLocationAddr + "\ndetails:\n" + model.deliveryDetails + ". \nThanks for choosing us\n Admin";
+                                commnicateTask(notificationMsg, emailMsg);
                                 NavHostFragment.findNavController(this).navigate(R.id.action_DCurrentDelivery_to_deliveryPersonDashboardFragment);
                             });
                         })))))
@@ -103,6 +111,9 @@ public class DCurrentDelivery extends Fragment {
                             PaymentModel pay = new PaymentModel(uid, deliveryId, -100, false);
                             paymentDb.document(auth.getCurrentUser().getUid()).collection("tasks").add(pay).addOnSuccessListener(unused4 -> {
                                 Toast.makeText(getActivity(), "Transaction completed", Toast.LENGTH_SHORT).show();
+                                String notificationMsg = "Deliver cancelled for " + model.fullName + "\n delivery product at " + model.dispatchLocationAddr;
+                                String emailMsg = "Deliver cancelled for " + model.fullName + "\n delivery product from" + model.startLocationAddr + "to" + model.dispatchLocationAddr + "\ndetails:\n" + model.deliveryDetails + ".\n You will be refunded amount Rs." + model.price + " \nThanks for choosing us\n Admin";
+                                commnicateTask(notificationMsg, emailMsg);
                                 NavHostFragment.findNavController(this).navigate(R.id.action_DCurrentDelivery_to_deliveryPersonDashboardFragment);
                             });
                         })))))
@@ -116,6 +127,19 @@ public class DCurrentDelivery extends Fragment {
         });
     }
 
+    private void commnicateTask(String notificationMsg, String emailMsg) {
+        Toast.makeText(getActivity(), "Transaction completed", Toast.LENGTH_SHORT).show();
+
+        try {
+            sendSMSMessage(model.phone, notificationMsg);
+            new AlertDialog.Builder(getActivity()).setMessage("do  you want to send email receipt also").setTitle("send Email?").setPositiveButton("Yes", (dialogInterface1, i1) -> {
+                composeEmail(new String[]{model.email}, "delivery confirmation message for " + deliveryId, emailMsg);
+            }).setNegativeButton("no", null).create().show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "could not send notification due to " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public Bitmap stringToBitMap(String encodedString) {
         try {
             byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
@@ -123,6 +147,23 @@ public class DCurrentDelivery extends Fragment {
         } catch (Exception e) {
             e.getMessage();
             return null;
+        }
+    }
+
+    public void composeEmail(String[] addresses, String subject, String text) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    protected void sendSMSMessage(String phoneNo, String message) {
+        if (EasyPermissions.hasPermissions(getActivity(), Manifest.permission.SEND_SMS)) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, message, null, null);
         }
     }
 }

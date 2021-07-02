@@ -48,9 +48,10 @@ public class UserEditProfile extends Fragment {
             bind.editAadhar.setText(userModel.aadhar);
             bind.editAddr.setText(userModel.address);
             bind.editEmail.setText(userModel.email);
-            bind.editEmail.setEnabled(false);
             bind.editFullname.setText(userModel.fullName);
             bind.editPhone.setText(userModel.phone);
+            bind.editEmail.setEnabled(false);
+            bind.editAadhar.setEnabled(false);
         });
         bind.fab.setOnClickListener(view1 -> {
             String phone = bind.editPhone.getText().toString();

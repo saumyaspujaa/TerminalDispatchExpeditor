@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textDlv" />
 
     <TextView
-        android:id="@+id/textAddress"
+        android:id="@+id/textAadhar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -75,7 +75,7 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/textAadhar" />
 
     <TextView
         android:id="@+id/textCity"
@@ -121,7 +121,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabActionRemove"
+        android:id="@+id/fabApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -135,16 +135,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabActionRemove2"
+        android:id="@+id/fabRemove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:backgroundTint="#E91E63"
         android:clickable="true"
         android:src="@drawable/mapbox_ic_clear"
-        app:layout_constraintBottom_toBottomOf="@+id/fabActionRemove"
-        app:layout_constraintStart_toEndOf="@+id/fabActionRemove"
-        app:layout_constraintTop_toTopOf="@+id/fabActionRemove"
+        app:layout_constraintBottom_toBottomOf="@+id/fabApprove"
+        app:layout_constraintStart_toEndOf="@+id/fabApprove"
+        app:layout_constraintTop_toTopOf="@+id/fabApprove"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

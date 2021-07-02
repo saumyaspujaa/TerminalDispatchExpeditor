@@ -160,6 +160,9 @@
             <action
                 android:id="@+id/action_adminReportDetailFragment_to_adminViewReports"
                 app:destination="@id/adminViewReports" />
+            <argument
+                android:name="uid"
+                app:argType="string" />
         </fragment>
         <fragment
             android:id="@+id/adminViewReports"
@@ -178,6 +181,9 @@
             <action
                 android:id="@+id/action_adminUserDetailFragment_to_AaminViewUsers"
                 app:destination="@id/AaminViewUsers" />
+            <argument
+                android:name="user"
+                app:argType="com.digipodium.tde.models.UserModel" />
         </fragment>
         <fragment
             android:id="@+id/adminDeliveryDetail"

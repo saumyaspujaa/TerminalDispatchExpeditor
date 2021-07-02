@@ -48,16 +48,17 @@ public class AdminViewDeliveryPerson extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bind = FragmentAdminViewDeliveryPersonBinding.bind(view);
-        bind.deliveryRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        bind.deliveryPersonRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         CollectionReference ref = db.collection(DELIVERY_PERSON);
         List<DeliveryPersonModel> dpList = new ArrayList<>();
         DeliveryAdapter adapter = new DeliveryAdapter(this, R.layout.card_delivery_person, dpList, ref);
-        bind.deliveryRecycler.setAdapter(adapter);
+        bind.deliveryPersonRecycler.setAdapter(adapter);
         ref.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                 dpList.add(document.toObject(DeliveryPersonModel.class));
             }
             adapter.notifyDataSetChanged();
+            bind.pbarDelivery.setVisibility(View.GONE);
         }).addOnFailureListener(e -> {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });

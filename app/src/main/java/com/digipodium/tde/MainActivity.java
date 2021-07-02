@@ -1,34 +1,36 @@
 package com.digipodium.tde;
 
-import android.Manifest;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.view.Menu;
-import android.view.MenuItem;
-
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.INTERNET;
+import static android.Manifest.permission.READ_SMS;
+import static android.Manifest.permission.RECEIVE_SMS;
+import static android.Manifest.permission.SEND_SMS;
+import static android.Manifest.permission.VIBRATE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private AppBarConfiguration appBarConfiguration;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,16 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         String[] perms = new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.INTERNET
+                WRITE_EXTERNAL_STORAGE,
+                ACCESS_FINE_LOCATION,
+                ACCESS_COARSE_LOCATION,
+                INTERNET,
+                SEND_SMS,
+                RECEIVE_SMS,
+                READ_SMS,
+                VIBRATE,
+                ACCESS_NETWORK_STATE,
+                CALL_PHONE
         };
         if (!EasyPermissions.hasPermissions(this, perms)) {
             EasyPermissions.requestPermissions(this, "requested permission", 23, perms);

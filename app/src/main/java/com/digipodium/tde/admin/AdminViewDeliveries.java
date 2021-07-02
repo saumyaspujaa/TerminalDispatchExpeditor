@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.digipodium.tde.R;
+import com.digipodium.tde.databinding.CardDlvCompleteDeliveryAdminBinding;
 import com.digipodium.tde.databinding.CardDlvCompleteDeliveryBinding;
 import com.digipodium.tde.databinding.FragmentAdminViewDeliveriesBinding;
 import com.digipodium.tde.models.DeliveryModel;
@@ -49,7 +50,7 @@ public class AdminViewDeliveries extends Fragment {
         bind.deliveryRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         CollectionReference ref = db.collection("Deliveries");
         List<DeliveryModel> deliveries = new ArrayList<>();
-        DeliveryAdapter adapter = new DeliveryAdapter(this, R.layout.card_dlv_complete_delivery, deliveries, ref);
+        DeliveryAdapter adapter = new DeliveryAdapter(this, R.layout.card_dlv_complete_delivery_admin, deliveries, ref);
         bind.deliveryRecycler.setAdapter(adapter);
         ref.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
@@ -99,17 +100,16 @@ public class AdminViewDeliveries extends Fragment {
 
         class Holder extends RecyclerView.ViewHolder {
 
-            private final @NonNull
-            CardDlvCompleteDeliveryBinding bind;
+            CardDlvCompleteDeliveryAdminBinding bind;
 
             public Holder(@NonNull @NotNull View itemView) {
                 super(itemView);
-                bind = CardDlvCompleteDeliveryBinding.bind(itemView);
-                bind.viewDelivery.setOnClickListener(view -> {
-                    DeliveryModel model = deliveries.get(getAdapterPosition());
-                    AdminViewDeliveriesDirections.ActionAdminViewDeliveriesToAdminDeliveryDetail dir = AdminViewDeliveriesDirections.actionAdminViewDeliveriesToAdminDeliveryDetail(model);
-                    NavHostFragment.findNavController(fragment).navigate(dir);
-                });
+                bind = CardDlvCompleteDeliveryAdminBinding.bind(itemView);
+                //bind.viewDelivery.setOnClickListener(view -> {
+                //    DeliveryModel model = deliveries.get(getAdapterPosition());
+                //    AdminViewDeliveriesDirections.ActionAdminViewDeliveriesToAdminDeliveryDetail dir = AdminViewDeliveriesDirections.actionAdminViewDeliveriesToAdminDeliveryDetail(model);
+                //    NavHostFragment.findNavController(fragment).navigate(dir);
+                //});
             }
 
             public void bind(DeliveryModel model) {
