@@ -196,6 +196,9 @@
             <action
                 android:id="@+id/action_adminDeliveryDetail_to_adminViewDeliveries"
                 app:destination="@id/adminViewDeliveries" />
+            <argument
+                android:name="deliveryId"
+                app:argType="string" />
         </fragment>
         <fragment
             android:id="@+id/adminDeliveryPersonDetail"
